@@ -1,4 +1,4 @@
-package de.esempe.rext.usermgmt.boundary;
+package de.esempe.rext.rolemgmt.boundary;
 
 import java.net.URI;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -30,13 +29,11 @@ import javax.ws.rs.core.UriInfo;
 
 import com.google.common.base.Strings;
 
-import de.esempe.rext.usermgmt.boundary.exceptionhandling.ExceptionHandlingInterceptor;
-import de.esempe.rext.usermgmt.domain.User;
+import de.esempe.rext.rolemgmt.domain.Role;
 
-@Stateless(description = "REST-Interface für User")
+@Stateless(description = "REST-Interface für Role")
 @Path(Constants.path)
-@Interceptors({ ExceptionHandlingInterceptor.class })
-public class UserResource
+public class RoleResource
 {
 	@PersistenceContext(name = Constants.PersistenceContext)
 	EntityManager em;
@@ -47,23 +44,23 @@ public class UserResource
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers()
+	public Response getRoles()
 	{
-		final List<User> users = this.loadAll();
-		return Response.ok(users).build();
+		final List<Role> Roles = this.loadAll();
+		return Response.ok(Roles).build();
 	}
 
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsersByLogin(@QueryParam("login") final String login)
+	public Response getRolesByLogin(@QueryParam("name") final String name)
 	{
-		if (Strings.isNullOrEmpty(login))
+		if (Strings.isNullOrEmpty(name))
 		{
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		final Optional<User> searchResult = this.findByLoginId(login);
+		final Optional<Role> searchResult = this.findByName(name);
 
 		if (searchResult.isPresent())
 		{
@@ -79,7 +76,7 @@ public class UserResource
 	public Response getResourceById(@PathParam("id") final String resourceId) throws Exception
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
@@ -107,7 +104,7 @@ public class UserResource
 	public Response deleteResourceById(@PathParam("id") final String resourceId)
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
@@ -121,24 +118,24 @@ public class UserResource
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createResource(final User user)
+	public Response createResource(final Role role)
 	{
-		final UUID objid = user.getObjId();
+		final UUID objid = role.getObjId();
 
-		// prüfen, ob User bereits vorhanden
-		Optional<User> searchResult = this.findByObjId(objid);
+		// prüfen, ob Rolle bereits vorhanden
+		Optional<Role> searchResult = this.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
-			return Response.status(Response.Status.CONFLICT).entity("User mit Objekt-ID bereits vorhanden").build();
+			return Response.status(Response.Status.CONFLICT).entity("Rolle mit Objekt-ID bereits vorhanden").build();
 		}
-		searchResult = this.findByLoginId(user.getLogin());
+		searchResult = this.findByName(role.getName());
 		if (searchResult.isPresent())
 		{
-			return Response.status(Response.Status.CONFLICT).entity("User mit Login bereits vorhanden").build();
+			return Response.status(Response.Status.CONFLICT).entity("Geleichnamige Rolle bereits vorhanden").build();
 		}
 
-		// User ist neu --> persistieren
-		this.save(user);
+		// Rolle ist neu --> persistieren
+		this.save(role);
 		final URI linkURI = UriBuilder.fromUri(this.uriInfo.getAbsolutePath()).path(objid.toString()).build();
 		final Link link = Link.fromUri(linkURI).rel("self").type(MediaType.APPLICATION_JSON).build();
 		return Response.noContent().links(link).build();
@@ -148,21 +145,21 @@ public class UserResource
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateResource(@PathParam("id") final String resourceId, final User user)
+	public Response updateResource(@PathParam("id") final String resourceId, final Role role)
 	{
 		final UUID objid = this.convert2UUID(resourceId);
 
 		// REST-Pfad-ID muss mit ID im Objekt übereinstimmen
-		if (false == objid.equals(user.getObjId()))
+		if (false == objid.equals(role.getObjId()))
 		{
-			final String reason = String.format("Request-Id %s ungleich der Object-Id %s", objid, user.getObjId());
+			final String reason = String.format("Request-Id %s ungleich der Object-Id %s", objid, role.getObjId());
 			return Response.status(Response.Status.BAD_REQUEST).entity(reason).build();
 		}
 
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
-			this.save(user);
+			this.save(role);
 			return Response.noContent().build();
 		}
 
@@ -176,33 +173,33 @@ public class UserResource
 	 *
 	 *****************************************************************************************/
 
-	List<User> loadAll()
+	List<Role> loadAll()
 	{
-		return this.em.createNamedQuery(Constants.all, User.class).getResultList();
+		return this.em.createNamedQuery(Constants.all, Role.class).getResultList();
 	}
 
-	void save(final User user)
+	void save(final Role role)
 	{
-		final Optional<User> findResult = this.findByObjId(user.getObjId());
+		final Optional<Role> findResult = this.findByObjId(role.getObjId());
 
 		// vorhandene Entität?
 		if (findResult.isPresent())
 		{
 			// --> Update
-			user.setId(findResult.get().getId());
-			this.em.merge(user);
+			role.setId(findResult.get().getId());
+			this.em.merge(role);
 		}
 		else
 		{
 			// --> Insert
-			this.em.persist(user);
+			this.em.persist(role);
 		}
 		this.em.flush();
 	}
 
 	void delete(final UUID objid)
 	{
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
 			this.em.remove(searchResult.get());
@@ -210,38 +207,38 @@ public class UserResource
 		}
 	}
 
-	void delete(final User user)
+	void delete(final Role role)
 	{
-		this.delete(user.getObjId());
+		this.delete(role.getObjId());
 	}
 
-	Optional<User> findByObjId(final UUID objid)
+	Optional<Role> findByObjId(final UUID objid)
 	{
 		return this.findByNamedQuery(Constants.byObjId, "objid", objid);
 	}
 
-	Optional<User> findByLoginId(final String login)
+	Optional<Role> findByName(final String name)
 	{
-		return this.findByNamedQuery(Constants.byLogin, "login", login);
+		return this.findByNamedQuery(Constants.byName, "name", name);
 	}
 
-	Optional<User> findByNamedQuery(final String nameOfQuery, final String nameOfParameter, final Object valueOfParameter)
+	Optional<Role> findByNamedQuery(final String nameOfQuery, final String nameOfParameter, final Object valueOfParameter)
 	{
-		Optional<User> result = Optional.empty();
+		Optional<Role> result = Optional.empty();
 
 		try
 		{
-			final TypedQuery<User> qry = this.em.createNamedQuery(nameOfQuery, User.class);
+			final TypedQuery<Role> qry = this.em.createNamedQuery(nameOfQuery, Role.class);
 			qry.setParameter(nameOfParameter, valueOfParameter);
-			final User user = qry.getSingleResult();
-			result = Optional.of(user);
+			final Role Role = qry.getSingleResult();
+			result = Optional.of(Role);
 		}
 		// kein Ergebnis
 		catch (final NoResultException e)
 		{
 			// nichts zu tun: dann wird "leeres" Optional geliefertS
 		}
-		// 2-n Ergebnisse --> hier nicht möglich: Id bzw. Login sind unique
+		// 2-n Ergebnisse --> hier nicht möglich: Id bzw. Name sind unique
 		// catch (final NonUniqueResultException e)
 		// {
 		//
@@ -250,5 +247,4 @@ public class UserResource
 		return result;
 
 	}
-
 }

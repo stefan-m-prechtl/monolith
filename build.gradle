@@ -51,10 +51,7 @@ dependencies {
 
 
 test {
-	useJUnitPlatform {
-		includeTags 'unit-test' 
-        excludeTags 'integration-test'
-	}
+	useJUnitPlatform() 
 }
 
 // Deploy WAR in Autodeploy-Verzeichnis

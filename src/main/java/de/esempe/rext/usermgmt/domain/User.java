@@ -1,14 +1,9 @@
 package de.esempe.rext.usermgmt.domain;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.json.bind.annotation.JsonbNillable;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -16,27 +11,23 @@ import javax.persistence.Table;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import de.esempe.rext.shared.domain.AbstractEntity;
+import de.esempe.rext.usermgmt.boundary.Constants;
+
 @Entity
-@Table(name = "t_user", schema = "userdb")
+@Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = "all", query = "SELECT u FROM User u"),
-	@NamedQuery(name = "byObjId", query = "SELECT u FROM User u WHERE u.objid= :objid"),
-	@NamedQuery(name = "byLogin", query = "SELECT u FROM User u WHERE u.login= :login")
+	@NamedQuery(name = Constants.all, query = "SELECT u FROM User u"),
+	@NamedQuery(name = Constants.byObjId, query = "SELECT u FROM User u WHERE u.objid= :objid"),
+	@NamedQuery(name = Constants.byLogin, query = "SELECT u FROM User u WHERE u.login= :login")
 })
 //@formatter:on
 
 @JsonbNillable()
-public class User implements Serializable
+public class User extends AbstractEntity
 {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
-	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
-	private UUID objid;
 
 	private String login;
 	private String firstname;
@@ -59,11 +50,6 @@ public class User implements Serializable
 		this.login = login;
 	}
 
-	public void setIdFrom(User user)
-	{
-		this.id = user.id;
-	}
-
 	// Getter/Setter
 	public String getLogin()
 	{
@@ -75,22 +61,12 @@ public class User implements Serializable
 		this.login = login;
 	}
 
-	public long getId()
-	{
-		return this.id;
-	}
-
-	public UUID getObjid()
-	{
-		return this.objid;
-	}
-
 	public String getFirstname()
 	{
 		return this.firstname;
 	}
 
-	public void setFirstname(String firstname)
+	public void setFirstname(final String firstname)
 	{
 		this.firstname = firstname;
 	}
@@ -100,7 +76,7 @@ public class User implements Serializable
 		return this.lastname;
 	}
 
-	public void setLastname(String lastname)
+	public void setLastname(final String lastname)
 	{
 		this.lastname = lastname;
 	}
@@ -111,8 +87,8 @@ public class User implements Serializable
 	{
 		//@formatter:off
 		final String result = MoreObjects.toStringHelper(this)
-				.add("id",this.id)
-				.add("obiId",this.objid)
+				.add("id",this.getId())
+				.add("obiId",this.getObjId())
 				.add("login",this.login)
 				.toString();
 
@@ -121,7 +97,7 @@ public class User implements Serializable
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 
 		if (obj == null)
@@ -133,14 +109,14 @@ public class User implements Serializable
 			return false;
 		}
 		final User other = (User) obj;
-		return Objects.equal(this.id, other.id) && Objects.equal(this.objid, other.objid) && Objects.equal(this.login, other.login);
+		return Objects.equal(this.getId(), other.getId()) && Objects.equal(this.getObjId(), other.getObjId()) && Objects.equal(this.login, other.login);
 	}
 
 	@Override
 	public int hashCode()
 	{
 
-		return Objects.hashCode(this.id, this.objid, this.login);
+		return Objects.hashCode(this.getId(), this.getObjId(), this.login);
 	}
 
 }

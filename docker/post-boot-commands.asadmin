@@ -7,6 +7,12 @@ set resources.jdbc-connection-pool.MySQL8Pool.property.password=admin
 set resources.jdbc-connection-pool.MySQL8Pool.property.user=root 
 set resources.jdbc-connection-pool.MySQL8Pool.property.portNumber=3306
 
+# Rollen
+create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8Role
+create-resource-ref --enabled=true --target=server jdbc/__MySQL8Role
+set resources.jdbc-resource.jdbc/__MySQL8Role.property.databaseName=roledb
+
+# Benutzer
 create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8User
 create-resource-ref --enabled=true --target=server jdbc/__MySQL8User
 set resources.jdbc-resource.jdbc/__MySQL8User.property.databaseName=userdb

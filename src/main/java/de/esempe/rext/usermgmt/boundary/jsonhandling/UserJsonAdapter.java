@@ -20,7 +20,7 @@ public class UserJsonAdapter implements JsonbAdapter<User, JsonObject>
 	{
 		//@formatter:off
 		final JsonObject result = Json.createObjectBuilder()
-				.add(field_id, user.getObjid().toString())
+				.add(field_id, user.getObjId().toString())
 				.add(field_login, user.getLogin())
 				.add(field_firstname, user.getFirstname())
 				.add(field_lastname, user.getLastname())
@@ -41,7 +41,8 @@ public class UserJsonAdapter implements JsonbAdapter<User, JsonObject>
 		{
 			final UUID objid = UUID.fromString(jsonObj.getString(field_id));
 			result = new User(userlogin, objid);
-		} else
+		}
+		else
 		{
 			result = new User(userlogin);
 		}

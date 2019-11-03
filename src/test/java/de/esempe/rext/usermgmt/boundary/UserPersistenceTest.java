@@ -30,7 +30,7 @@ class UserPersistenceTest
 
 	private static EntityManager em;
 	private static EntityTransaction tx;
-	private static final String jpaContext = "dbtest";
+	private static final String jpaContext = "testuserdb";
 
 	private UserResource objUnderTest;
 	private static User user;
@@ -93,7 +93,7 @@ class UserPersistenceTest
 	void read()
 	{
 		// act
-		final Optional<User> searchResult = this.objUnderTest.findByObjId(UserPersistenceTest.user.getObjid());
+		final Optional<User> searchResult = this.objUnderTest.findByObjId(UserPersistenceTest.user.getObjId());
 
 		// assert
 		assertThat(searchResult).isNotNull();
@@ -111,7 +111,7 @@ class UserPersistenceTest
 		UserPersistenceTest.user.setLogin(UserPersistenceTest.user.getLogin().toUpperCase());
 
 		final long id = UserPersistenceTest.user.getId();
-		final UUID objid = UserPersistenceTest.user.getObjid();
+		final UUID objid = UserPersistenceTest.user.getObjId();
 		final String login = UserPersistenceTest.user.getLogin();
 
 		// act
@@ -122,7 +122,7 @@ class UserPersistenceTest
 		// assert
 		assertThat(UserPersistenceTest.user).isNotNull();
 		assertThat(UserPersistenceTest.user.getId()).isEqualTo(id);
-		assertThat(UserPersistenceTest.user.getObjid()).isEqualTo(objid);
+		assertThat(UserPersistenceTest.user.getObjId()).isEqualTo(objid);
 		assertThat(UserPersistenceTest.user.getLogin()).isEqualTo(login);
 	}
 
@@ -132,7 +132,7 @@ class UserPersistenceTest
 	void delete()
 	{
 		// prepare
-		final UUID objid = UserPersistenceTest.user.getObjid();
+		final UUID objid = UserPersistenceTest.user.getObjId();
 
 		// act
 		UserPersistenceTest.tx.begin();
