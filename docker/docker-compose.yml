@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+ rextdbserver:
+  image: mysql:8.0.12
+  container_name: rext_dbserver
+  volumes:
+  - ./mysql8/data1:/var/lib/mysql
+  - ./sqlinit:/docker-entrypoint-initdb.d/
+  ports:
+  - "3306:3306"
+  environment:
+   TZ: Europe/Berlin
+   MYSQL_ROOT_PASSWORD: admin 
+  
+ rextappserver:
+  build:
+   context: ./
+   dockerfile: appserver.dockerfile
+  image: rextappserver:lastest
+  container_name: rext_appserver
+  volumes:
+  - ./autodeploy:/opt/payara/appserver/glassfish/domains/production/autodeploy
+  ports:
+  - "8080:8080"
+  - "4848:4848"
+  - "9009:9009"
+  environment:
+   PINGMSG: "Got Ping-Request at: "
+  

@@ -1,0 +1,18 @@
+create-jdbc-connection-pool --datasourceClassname=com.mysql.cj.jdbc.MysqlDataSource --resType=javax.sql.DataSource MySQL8Pool
+set resources.jdbc-connection-pool.MySQL8Pool.property.serverTimezone=Europe/Berlin 
+set resources.jdbc-connection-pool.MySQL8Pool.property.useSSL=false 
+set resources.jdbc-connection-pool.MySQL8Pool.property.allowPublicKeyRetrieval=true
+set resources.jdbc-connection-pool.MySQL8Pool.property.serverName=rext_dbserver
+set resources.jdbc-connection-pool.MySQL8Pool.property.password=admin 
+set resources.jdbc-connection-pool.MySQL8Pool.property.user=root 
+set resources.jdbc-connection-pool.MySQL8Pool.property.portNumber=3306
+
+create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8User
+create-resource-ref --enabled=true --target=server jdbc/__MySQL8User
+set resources.jdbc-resource.jdbc/__MySQL8User.property.databaseName=userdb
+
+# Dynamic Re-Deploy (default: deaktiviert)
+set configs.config.server-config.admin-service.das-config.dynamic-reload-enabled=true
+set configs.config.server-config.admin-service.das-config.autodeploy-enabled=true
+
+set resources.jdbc-resource.jdbc/__MySQL8User.property.databaseName=userdb
