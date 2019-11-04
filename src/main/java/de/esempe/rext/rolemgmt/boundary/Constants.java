@@ -14,7 +14,7 @@ public final class Constants
 	// JPA: Schema, Tabelle, Named Queries
 
 	public final static String schema = "roledb";
-	public final static String table = "t_rol";
+	public final static String table = "t_role";
 	public final static String all = "allRoles";
 	public final static String byObjId = "RolebyObjId";
 	public final static String byName = "RolebyName";

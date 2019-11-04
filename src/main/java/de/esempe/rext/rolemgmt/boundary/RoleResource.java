@@ -6,10 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,8 +32,8 @@ import de.esempe.rext.rolemgmt.domain.Role;
 @Path(Constants.path)
 public class RoleResource
 {
-	@PersistenceContext(name = Constants.PersistenceContext)
-	EntityManager em;
+	@Inject
+	RoleRepository repository;
 
 	@Context
 	UriInfo uriInfo;
@@ -46,7 +43,7 @@ public class RoleResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles()
 	{
-		final List<Role> Roles = this.loadAll();
+		final List<Role> Roles = this.repository.loadAll();
 		return Response.ok(Roles).build();
 	}
 
@@ -60,7 +57,7 @@ public class RoleResource
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		final Optional<Role> searchResult = this.findByName(name);
+		final Optional<Role> searchResult = this.repository.findByName(name);
 
 		if (searchResult.isPresent())
 		{
@@ -76,7 +73,7 @@ public class RoleResource
 	public Response getResourceById(@PathParam("id") final String resourceId) throws Exception
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<Role> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.repository.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
@@ -104,11 +101,11 @@ public class RoleResource
 	public Response deleteResourceById(@PathParam("id") final String resourceId)
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<Role> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.repository.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
-			this.delete(objid);
+			this.repository.delete(objid);
 			return Response.noContent().build();
 		}
 
@@ -123,19 +120,19 @@ public class RoleResource
 		final UUID objid = role.getObjId();
 
 		// prüfen, ob Rolle bereits vorhanden
-		Optional<Role> searchResult = this.findByObjId(objid);
+		Optional<Role> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
 			return Response.status(Response.Status.CONFLICT).entity("Rolle mit Objekt-ID bereits vorhanden").build();
 		}
-		searchResult = this.findByName(role.getName());
+		searchResult = this.repository.findByName(role.getName());
 		if (searchResult.isPresent())
 		{
 			return Response.status(Response.Status.CONFLICT).entity("Geleichnamige Rolle bereits vorhanden").build();
 		}
 
 		// Rolle ist neu --> persistieren
-		this.save(role);
+		this.repository.save(role);
 		final URI linkURI = UriBuilder.fromUri(this.uriInfo.getAbsolutePath()).path(objid.toString()).build();
 		final Link link = Link.fromUri(linkURI).rel("self").type(MediaType.APPLICATION_JSON).build();
 		return Response.noContent().links(link).build();
@@ -156,95 +153,14 @@ public class RoleResource
 			return Response.status(Response.Status.BAD_REQUEST).entity(reason).build();
 		}
 
-		final Optional<Role> searchResult = this.findByObjId(objid);
+		final Optional<Role> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
-			this.save(role);
+			this.repository.save(role);
 			return Response.noContent().build();
 		}
 
 		return Response.status(Response.Status.NOT_FOUND).build();
-
-	}
-
-	/****************************************************************************************
-	 *
-	 * Methoden für Persistierung
-	 *
-	 *****************************************************************************************/
-
-	List<Role> loadAll()
-	{
-		return this.em.createNamedQuery(Constants.all, Role.class).getResultList();
-	}
-
-	void save(final Role role)
-	{
-		final Optional<Role> findResult = this.findByObjId(role.getObjId());
-
-		// vorhandene Entität?
-		if (findResult.isPresent())
-		{
-			// --> Update
-			role.setId(findResult.get().getId());
-			this.em.merge(role);
-		}
-		else
-		{
-			// --> Insert
-			this.em.persist(role);
-		}
-		this.em.flush();
-	}
-
-	void delete(final UUID objid)
-	{
-		final Optional<Role> searchResult = this.findByObjId(objid);
-		if (searchResult.isPresent())
-		{
-			this.em.remove(searchResult.get());
-			this.em.flush();
-		}
-	}
-
-	void delete(final Role role)
-	{
-		this.delete(role.getObjId());
-	}
-
-	Optional<Role> findByObjId(final UUID objid)
-	{
-		return this.findByNamedQuery(Constants.byObjId, "objid", objid);
-	}
-
-	Optional<Role> findByName(final String name)
-	{
-		return this.findByNamedQuery(Constants.byName, "name", name);
-	}
-
-	Optional<Role> findByNamedQuery(final String nameOfQuery, final String nameOfParameter, final Object valueOfParameter)
-	{
-		Optional<Role> result = Optional.empty();
-
-		try
-		{
-			final TypedQuery<Role> qry = this.em.createNamedQuery(nameOfQuery, Role.class);
-			qry.setParameter(nameOfParameter, valueOfParameter);
-			final Role Role = qry.getSingleResult();
-			result = Optional.of(Role);
-		}
-		// kein Ergebnis
-		catch (final NoResultException e)
-		{
-			// nichts zu tun: dann wird "leeres" Optional geliefertS
-		}
-		// 2-n Ergebnisse --> hier nicht möglich: Id bzw. Name sind unique
-		// catch (final NonUniqueResultException e)
-		// {
-		//
-		// }
-
-		return result;
 
 	}
 }

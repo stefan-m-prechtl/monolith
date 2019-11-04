@@ -6,11 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,18 +35,18 @@ import de.esempe.rext.usermgmt.domain.User;
 @Interceptors({ ExceptionHandlingInterceptor.class })
 public class UserResource
 {
-	@PersistenceContext(name = Constants.PersistenceContext)
-	EntityManager em;
-
 	@Context
 	UriInfo uriInfo;
+
+	@Inject
+	UserRepository repository;
 
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUsers()
 	{
-		final List<User> users = this.loadAll();
+		final List<User> users = this.repository.loadAll();
 		return Response.ok(users).build();
 	}
 
@@ -63,7 +60,7 @@ public class UserResource
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		final Optional<User> searchResult = this.findByLoginId(login);
+		final Optional<User> searchResult = this.repository.findByLoginId(login);
 
 		if (searchResult.isPresent())
 		{
@@ -79,7 +76,7 @@ public class UserResource
 	public Response getResourceById(@PathParam("id") final String resourceId) throws Exception
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<User> searchResult = this.repository.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
@@ -107,11 +104,11 @@ public class UserResource
 	public Response deleteResourceById(@PathParam("id") final String resourceId)
 	{
 		final UUID objid = this.convert2UUID(resourceId);
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<User> searchResult = this.repository.findByObjId(objid);
 
 		if (searchResult.isPresent())
 		{
-			this.delete(objid);
+			this.repository.delete(objid);
 			return Response.noContent().build();
 		}
 
@@ -126,19 +123,19 @@ public class UserResource
 		final UUID objid = user.getObjId();
 
 		// prüfen, ob User bereits vorhanden
-		Optional<User> searchResult = this.findByObjId(objid);
+		Optional<User> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
 			return Response.status(Response.Status.CONFLICT).entity("User mit Objekt-ID bereits vorhanden").build();
 		}
-		searchResult = this.findByLoginId(user.getLogin());
+		searchResult = this.repository.findByLoginId(user.getLogin());
 		if (searchResult.isPresent())
 		{
 			return Response.status(Response.Status.CONFLICT).entity("User mit Login bereits vorhanden").build();
 		}
 
 		// User ist neu --> persistieren
-		this.save(user);
+		this.repository.save(user);
 		final URI linkURI = UriBuilder.fromUri(this.uriInfo.getAbsolutePath()).path(objid.toString()).build();
 		final Link link = Link.fromUri(linkURI).rel("self").type(MediaType.APPLICATION_JSON).build();
 		return Response.noContent().links(link).build();
@@ -159,96 +156,14 @@ public class UserResource
 			return Response.status(Response.Status.BAD_REQUEST).entity(reason).build();
 		}
 
-		final Optional<User> searchResult = this.findByObjId(objid);
+		final Optional<User> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
-			this.save(user);
+			this.repository.save(user);
 			return Response.noContent().build();
 		}
 
 		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
-
-	/****************************************************************************************
-	 *
-	 * Methoden für Persistierung
-	 *
-	 *****************************************************************************************/
-
-	List<User> loadAll()
-	{
-		return this.em.createNamedQuery(Constants.all, User.class).getResultList();
-	}
-
-	void save(final User user)
-	{
-		final Optional<User> findResult = this.findByObjId(user.getObjId());
-
-		// vorhandene Entität?
-		if (findResult.isPresent())
-		{
-			// --> Update
-			user.setId(findResult.get().getId());
-			this.em.merge(user);
-		}
-		else
-		{
-			// --> Insert
-			this.em.persist(user);
-		}
-		this.em.flush();
-	}
-
-	void delete(final UUID objid)
-	{
-		final Optional<User> searchResult = this.findByObjId(objid);
-		if (searchResult.isPresent())
-		{
-			this.em.remove(searchResult.get());
-			this.em.flush();
-		}
-	}
-
-	void delete(final User user)
-	{
-		this.delete(user.getObjId());
-	}
-
-	Optional<User> findByObjId(final UUID objid)
-	{
-		return this.findByNamedQuery(Constants.byObjId, "objid", objid);
-	}
-
-	Optional<User> findByLoginId(final String login)
-	{
-		return this.findByNamedQuery(Constants.byLogin, "login", login);
-	}
-
-	Optional<User> findByNamedQuery(final String nameOfQuery, final String nameOfParameter, final Object valueOfParameter)
-	{
-		Optional<User> result = Optional.empty();
-
-		try
-		{
-			final TypedQuery<User> qry = this.em.createNamedQuery(nameOfQuery, User.class);
-			qry.setParameter(nameOfParameter, valueOfParameter);
-			final User user = qry.getSingleResult();
-			result = Optional.of(user);
-		}
-		// kein Ergebnis
-		catch (final NoResultException e)
-		{
-			// nichts zu tun: dann wird "leeres" Optional geliefertS
-		}
-		// 2-n Ergebnisse --> hier nicht möglich: Id bzw. Login sind unique
-		// catch (final NonUniqueResultException e)
-		// {
-		//
-		// }
-
-		return result;
-
-	}
-
 }

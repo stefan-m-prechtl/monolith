@@ -23,7 +23,6 @@ import de.esempe.rext.usermgmt.boundary.Constants;
 	@NamedQuery(name = Constants.byLogin, query = "SELECT u FROM User u WHERE u.login= :login")
 })
 //@formatter:on
-
 @JsonbNillable()
 public class User extends AbstractEntity
 {

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import de.esempe.rext.usermgmt.domain.User;
 
 @Tag("integration-test")
-@DisplayName("Integrationstests UserResource/MySQL-Datenbank")
+@DisplayName("Integrationstests UserRepository/MySQL-Datenbank")
 @TestMethodOrder(OrderAnnotation.class)
 class UserPersistenceTest
 {
@@ -32,7 +32,7 @@ class UserPersistenceTest
 	private static EntityTransaction tx;
 	private static final String jpaContext = "testuserdb";
 
-	private UserResource objUnderTest;
+	private UserRepository objUnderTest;
 	private static User user;
 
 	@BeforeAll
@@ -52,7 +52,7 @@ class UserPersistenceTest
 	void setUpEach()
 	{
 		// Testobjekt erzeugen
-		this.objUnderTest = new UserResource();
+		this.objUnderTest = new UserRepository();
 		this.objUnderTest.em = em;
 	}
 
