@@ -2,6 +2,8 @@ package de.esempe.rext.usermgmt.boundary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import de.esempe.rext.shared.boundary.PersistenceHelper;
 import de.esempe.rext.usermgmt.domain.User;
 
 @Tag("integration-test")
@@ -44,7 +47,9 @@ class UserPersistenceTest
 		tx = em.getTransaction();
 
 		// Alle Daten in DB löschen
-		PersistenceHelper.deleteTableData(jpaContext);
+		final List<String> deleteQueries = Arrays.asList("DELETE FROM userdb.t_user",
+				"INSERT INTO userdb.t_user (objid,login, firstname,lastname) VALUES (UUID_TO_BIN(UUID()),'prs','Stefan', 'Prechtl')");
+		PersistenceHelper.runSqlQueries(jpaContext, deleteQueries);
 
 	}
 
@@ -54,6 +59,7 @@ class UserPersistenceTest
 		// Testobjekt erzeugen
 		this.objUnderTest = new UserRepository();
 		this.objUnderTest.em = em;
+		this.objUnderTest.init();
 	}
 
 	@AfterAll
@@ -80,7 +86,7 @@ class UserPersistenceTest
 
 		// assert
 		assertThat(result).isNotNull();
-		assertThat(result.getId()).isGreaterThan(0);
+		assertThat(result.getObjId()).isNotNull();
 		assertThat(result.getLogin()).isEqualTo("u4711");
 
 		// für die Weiterverwendung in den nachfolgenden Tests
@@ -110,7 +116,6 @@ class UserPersistenceTest
 		// prepare
 		UserPersistenceTest.user.setLogin(UserPersistenceTest.user.getLogin().toUpperCase());
 
-		final long id = UserPersistenceTest.user.getId();
 		final UUID objid = UserPersistenceTest.user.getObjId();
 		final String login = UserPersistenceTest.user.getLogin();
 
@@ -121,7 +126,7 @@ class UserPersistenceTest
 
 		// assert
 		assertThat(UserPersistenceTest.user).isNotNull();
-		assertThat(UserPersistenceTest.user.getId()).isEqualTo(id);
+
 		assertThat(UserPersistenceTest.user.getObjId()).isEqualTo(objid);
 		assertThat(UserPersistenceTest.user.getLogin()).isEqualTo(login);
 	}

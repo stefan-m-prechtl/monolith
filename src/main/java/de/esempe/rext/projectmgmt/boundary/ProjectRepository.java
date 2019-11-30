@@ -1,23 +1,23 @@
-package de.esempe.rext.rolemgmt.boundary;
+package de.esempe.rext.projectmgmt.boundary;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import de.esempe.rext.rolemgmt.domain.Role;
+import de.esempe.rext.projectmgmt.domain.Project;
 import de.esempe.rext.shared.boundary.AbstractRepository;
 import de.esempe.rext.shared.boundary.NamedQueryConstants;
 
-@Stateless(description = "Respository für Domänenklasse Rolle")
-public class RoleRepository extends AbstractRepository<Role>
+@Stateless(description = "Respository für Domänenklasse Projekt")
+public class ProjectRepository extends AbstractRepository<Project>
 {
 	@PersistenceContext(unitName = Constants.PersistenceContext)
 	EntityManager em;
 
-	public RoleRepository()
+	public ProjectRepository()
 	{
-		super(Role.class);
+		super(Project.class);
 	}
 
 	@PostConstruct

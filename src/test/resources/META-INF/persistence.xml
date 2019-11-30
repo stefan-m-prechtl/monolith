@@ -3,6 +3,50 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	
+	<persistence-unit name="testworkflowdb" transaction-type="RESOURCE_LOCAL">
+		
+		<class>de.esempe.rext.shared.domain.UuidConverter</class>
+		<class>de.esempe.rext.workflowmgmt.domain.State</class>
+		<class>de.esempe.rext.workflowmgmt.domain.Workflow</class>
+		<class>de.esempe.rext.workflowmgmt.domain.Transition</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workflowdb" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="eclipselink.logging.level" value="FINEST"/>
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="testitemdb" transaction-type="RESOURCE_LOCAL">
+		
+		<class>de.esempe.rext.shared.domain.UuidConverter</class>
+		<class>de.esempe.rext.itemmgmt.domain.Item</class>
+ 		
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/itemdb" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="eclipselink.logging.level" value="FINE"/>
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="testprojectdb" transaction-type="RESOURCE_LOCAL">
+		
+		<class>de.esempe.rext.shared.domain.UuidConverter</class>
+		<class>de.esempe.rext.projectmgmt.domain.Project</class>
+ 		
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/projectdb" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="eclipselink.logging.level" value="FINE"/>
+		</properties>
+	</persistence-unit>
+	
 	<persistence-unit name="testroledb" transaction-type="RESOURCE_LOCAL">
 		
 		<class>de.esempe.rext.shared.domain.UuidConverter</class>

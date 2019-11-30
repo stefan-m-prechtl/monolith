@@ -9,9 +9,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 import de.esempe.rext.shared.domain.AbstractEntity;
+import de.esempe.rext.shared.domain.Key;
 import de.esempe.rext.usermgmt.boundary.Constants;
 
 @Entity
@@ -44,7 +44,6 @@ public class User extends AbstractEntity
 
 	public User(final String login, final UUID objid)
 	{
-		this.id = -1L;
 		this.objid = objid;
 		this.login = login;
 	}
@@ -80,6 +79,13 @@ public class User extends AbstractEntity
 		this.lastname = lastname;
 	}
 
+	@Override
+	public Key getKey()
+	{
+		return new Key("login", this.login);
+
+	}
+
 	// Standardmethoden
 	@Override
 	public String toString()
@@ -93,29 +99,6 @@ public class User extends AbstractEntity
 
 		return result;
 		//@formatter:on
-	}
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-
-		if (obj == null)
-		{
-			return false;
-		}
-		if (this.getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final User other = (User) obj;
-		return Objects.equal(this.getId(), other.getId()) && Objects.equal(this.getObjId(), other.getObjId()) && Objects.equal(this.login, other.login);
-	}
-
-	@Override
-	public int hashCode()
-	{
-
-		return Objects.hashCode(this.getId(), this.getObjId(), this.login);
 	}
 
 }

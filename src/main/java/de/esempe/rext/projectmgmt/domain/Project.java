@@ -1,8 +1,10 @@
-package de.esempe.rext.rolemgmt.domain;
+package de.esempe.rext.projectmgmt.domain;
 
 import java.util.UUID;
 
 import javax.json.bind.annotation.JsonbNillable;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -10,38 +12,47 @@ import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
 
-import de.esempe.rext.rolemgmt.boundary.Constants;
+import de.esempe.rext.projectmgmt.boundary.Constants;
 import de.esempe.rext.shared.domain.AbstractEntity;
 import de.esempe.rext.shared.domain.Key;
 
+/**
+ * Domänenklasse für ein Projekt.
+ * 
+ * @author Stefan M. Prechtl (www.esempe.de)
+ *
+ */
 @Entity
 @Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.all, query = "SELECT r FROM Role r"),
-	@NamedQuery(name = Constants.byObjId, query = "SELECT r FROM Role r WHERE r.objid= :objid"),
-	@NamedQuery(name = Constants.byName, query = "SELECT r FROM Role r WHERE r.name= :name")
+	@NamedQuery(name = Constants.all, query = "SELECT p FROM Project p"),
+	@NamedQuery(name = Constants.byObjId, query = "SELECT p FROM Project p WHERE p.objid= :objid"),
+	@NamedQuery(name = Constants.byName, query = "SELECT p FROM Project p WHERE p.name= :name")
 })
 //@formatter:on
 @JsonbNillable()
-public class Role extends AbstractEntity
+public class Project extends AbstractEntity
 {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private String description;
+	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
+	@Column(name = "owner_user_objid")
+	private UUID ownerUserObjid;
 
-	Role()
+	Project()
 	{
 		// wegen JPA wird Defaultkonstruktor benötigt
 	}
 
-	public Role(final String name)
+	public Project(final String name)
 	{
 		this(name, UUID.randomUUID());
 	}
 
-	public Role(final String name, final UUID objid)
+	public Project(final String name, final UUID objid)
 	{
 		this.objid = objid;
 		this.name = name;
@@ -66,6 +77,16 @@ public class Role extends AbstractEntity
 	public void setDescription(final String description)
 	{
 		this.description = description;
+	}
+
+	public UUID getOwnerUserObjid()
+	{
+		return this.ownerUserObjid;
+	}
+
+	public void setOwnerUserObjid(final UUID ownerUserObjid)
+	{
+		this.ownerUserObjid = ownerUserObjid;
 	}
 
 	@Override

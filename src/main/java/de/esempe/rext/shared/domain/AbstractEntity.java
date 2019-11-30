@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.google.common.base.Objects;
+
 /**
  * Abstrakte Basisklasse für alle konkreten Entitäten.
  * 
@@ -31,6 +33,11 @@ public abstract class AbstractEntity implements Serializable
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
 	protected UUID objid;
 
+	protected AbstractEntity()
+	{
+		this.id = -1;
+	}
+
 	// ### Getter-Methoden ###
 	public UUID getObjId()
 	{
@@ -47,20 +54,31 @@ public abstract class AbstractEntity implements Serializable
 		this.id = id;
 	}
 
+	public abstract Key getKey();
+
 	// ### Allgemeine Object-Methoden ###
 
 	@Override
-	// Jede Subklasse muss hashCode() implementieren!
-	public int hashCode()
+	public boolean equals(final Object obj)
 	{
-		throw new UnsupportedOperationException("Abgeleitete Klasse hat keine Implementierung von 'hashCode()'");
+
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final AbstractEntity other = (AbstractEntity) obj;
+		return Objects.equal(this.getId(), other.getId()) && Objects.equal(this.getObjId(), other.getObjId())
+				&& Objects.equal(this.getKey().value, other.getKey().value);
 	}
 
 	@Override
-	// Jede Subklasse muss equals() implementieren!
-	public boolean equals(final Object obj)
+	public int hashCode()
 	{
-		throw new UnsupportedOperationException("Abgeleitete Klasse hat keine Implementierung von 'equals()'");
+		return Objects.hashCode(this.getId(), this.getObjId(), this.getKey().value);
 	}
 
 	@Override

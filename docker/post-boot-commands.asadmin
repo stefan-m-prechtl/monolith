@@ -7,6 +7,22 @@ set resources.jdbc-connection-pool.MySQL8Pool.property.password=admin
 set resources.jdbc-connection-pool.MySQL8Pool.property.user=root 
 set resources.jdbc-connection-pool.MySQL8Pool.property.portNumber=3306
 
+
+# Workflows
+create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8Workflow
+create-resource-ref --enabled=true --target=server jdbc/__MySQL8Workflow
+set resources.jdbc-resource.jdbc/__MySQL8Workflow.property.databaseName=workflowdb
+
+# Items
+create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8Item
+create-resource-ref --enabled=true --target=server jdbc/__MySQL8Item
+set resources.jdbc-resource.jdbc/__MySQL8Item.property.databaseName=itemdb
+
+# Projekte
+create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8Project
+create-resource-ref --enabled=true --target=server jdbc/__MySQL8Project
+set resources.jdbc-resource.jdbc/__MySQL8Project.property.databaseName=projectdb
+
 # Rollen
 create-jdbc-resource --enabled=true --poolName=MySQL8Pool --target=domain jdbc/__MySQL8Role
 create-resource-ref --enabled=true --target=server jdbc/__MySQL8Role

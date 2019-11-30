@@ -1,23 +1,26 @@
-package de.esempe.rext.rolemgmt.boundary;
+package de.esempe.rext.itemmgmt.boundary;
+
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import de.esempe.rext.rolemgmt.domain.Role;
+import de.esempe.rext.itemmgmt.domain.Item;
 import de.esempe.rext.shared.boundary.AbstractRepository;
 import de.esempe.rext.shared.boundary.NamedQueryConstants;
 
-@Stateless(description = "Respository für Domänenklasse Rolle")
-public class RoleRepository extends AbstractRepository<Role>
+@Stateless(description = "Respository für Domänenklasse Projekt")
+public class ItemRepository extends AbstractRepository<Item>
 {
 	@PersistenceContext(unitName = Constants.PersistenceContext)
 	EntityManager em;
 
-	public RoleRepository()
+	public ItemRepository()
 	{
-		super(Role.class);
+		super(Item.class);
 	}
 
 	@PostConstruct
@@ -26,6 +29,12 @@ public class RoleRepository extends AbstractRepository<Role>
 		super.em = this.em;
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.all);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjId);
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byName);
+	}
+
+	public List<Item> loadAllForProject(final UUID projectObjid)
+	{
+		final List<Item> result = this.findEntitiesNamedQuery(Constants.byProjectObjId, "project_objid", projectObjid);
+		return result;
+
 	}
 }
