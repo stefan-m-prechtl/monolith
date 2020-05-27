@@ -2,6 +2,7 @@ package de.esempe.rext.itemmgmt.boundary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +11,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import de.esempe.rext.itemmgmt.domain.Item;
-import de.esempe.rext.projectmgmt.domain.Project;
 import de.esempe.rext.shared.boundary.AbstractPersistenceTest;
-import de.esempe.rext.usermgmt.domain.User;
 
 @Tag("integration-test")
 @DisplayName("Integrationstests ItemRepository/MySQL-Datenbank")
@@ -46,11 +45,11 @@ public class ItemPersistenceTest extends AbstractPersistenceTest<Item>
 	@Override
 	protected Item createTestEntity()
 	{
-		final Project project = new Project("Demo");
-		final User user = new User("sysadmin");
-		final Item entity = new Item(project.getObjId(), "Testitem");
+		final UUID projectObjId = UUID.randomUUID();
+		final UUID userObjId = UUID.randomUUID();
+		final Item entity = new Item(projectObjId, userObjId, "Testitem");
 		entity.setContent("Inhalt für Testitem");
-		entity.setCreator(user.getObjId());
+
 		return entity;
 
 	}
@@ -58,8 +57,9 @@ public class ItemPersistenceTest extends AbstractPersistenceTest<Item>
 	@Override
 	protected Item updateTestEntity(final Item entity)
 	{
-		this.entity.setContent("Geänderter Inhalt für Testitem");
-		return entity;
+		final Item updatedObject = entity;
+		updatedObject.setContent(entity.getContent().toUpperCase());
+		return updatedObject;
 	}
 
 }

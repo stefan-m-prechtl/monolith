@@ -11,6 +11,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 import de.esempe.rext.itemmgmt.boundary.Constants;
 import de.esempe.rext.shared.domain.AbstractEntity;
@@ -44,19 +46,20 @@ public class Item extends AbstractEntity
 	Item()
 	{
 		// wegen JPA wird Defaultkonstruktor benötigt
-		super();
 	}
 
-	public Item(final UUID projectObjId, final String title)
+	public Item(final UUID projectObjId, final UUID creatorObjId, final String title)
 	{
-		this(projectObjId, title, UUID.randomUUID());
+		this(projectObjId, creatorObjId, title, UUID.randomUUID());
 	}
 
-	public Item(final UUID projectObjId, final String title, final UUID objid)
+	public Item(final UUID projectObjId, final UUID creatorObjId, final String title, final UUID objid)
 	{
 		this.objid = objid;
 		this.projectObjid = projectObjId;
+		this.creatorUserObjid = creatorObjId;
 		this.title = title;
+		this.content = "";
 	}
 	
 	// Getter/Setter
@@ -67,6 +70,7 @@ public class Item extends AbstractEntity
 
 	public void setTitle(final String title)
 	{
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(title));
 		this.title=title;
 	}
 
@@ -77,12 +81,8 @@ public class Item extends AbstractEntity
 
 	public void setContent(final String content)
 	{
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(content), "Leeres Argument");
 		this.content= content;
-	}
-
-	public String getcontent()
-	{
-		return this.content;
 	}
 
 	public UUID getProject()

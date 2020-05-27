@@ -3,6 +3,8 @@ package de.esempe.rext.itemmgmt.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.UUID;
+
 import javax.json.Json;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbConfig;
@@ -16,9 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import de.esempe.rext.itemmgmt.boundary.jsonhandling.ItemJsonAdapter;
-import de.esempe.rext.projectmgmt.domain.Project;
 import de.esempe.rext.shared.boundary.JsonbContextResolver;
-import de.esempe.rext.usermgmt.domain.User;
 
 @Tag("unit-test")
 @DisplayName("Tests für Json-Konvertierung Item")
@@ -30,11 +30,10 @@ public class ItemJsonTest
 
 	Item generateItem()
 	{
-		final Project project = new Project("Demo");
-		final User user = new User("sysadmin");
-		final Item itemObj = new Item(project.getObjId(), "Testitem");
+		final UUID projectObjId = UUID.randomUUID();
+		final UUID userObjId = UUID.randomUUID();
+		final Item itemObj = new Item(projectObjId, userObjId, "Testitem");
 		itemObj.setContent("Inhalt für Testitem");
-		itemObj.setCreator(user.getObjId());
 
 		return itemObj;
 	}

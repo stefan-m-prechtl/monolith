@@ -23,9 +23,9 @@ public class StatusPersistenceTest extends AbstractPersistenceTest<State>
 	static void setUp() throws Exception
 	{
 		final List<String> initialQueries = new ArrayList<String>();
-		initialQueries.add("DELETE FROM workflowdb.t_status");
+		initialQueries.add("DELETE FROM workflowdb.t_state");
 		initialQueries
-				.add("INSERT INTO workflowdb.t_status (objid,name,description) VALUES (UUID_TO_BIN(UUID()),'in Bearbeitung', 'Beschreibung für inBearbeitung')");
+				.add("INSERT INTO workflowdb.t_state (objid,name,description) VALUES (UUID_TO_BIN(UUID()),'in Bearbeitung', 'Beschreibung für inBearbeitung')");
 
 		AbstractPersistenceTest.setUp(jpaContext, initialQueries);
 

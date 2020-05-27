@@ -43,11 +43,11 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 		if (jsonObj.containsKey(field_id))
 		{
 			final UUID objid = UUID.fromString(jsonObj.getString(field_id));
-			result = new Item(project, title, objid);
+			result = new Item(project, creator, title, objid);
 		}
 		else
 		{
-			result = new Item(project, title);
+			result = new Item(project, creator, title);
 		}
 		result.setContent(content);
 		result.setCreator(creator);
