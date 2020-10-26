@@ -12,4 +12,6 @@ Build erfolgt über Gradle mit Tasks für
 - Deployment des WAR in den autodeploy Ordner
 
 ## URL (mit Docker-Container)
+- http://localhost:8080/monolith/rext/projectmgmt/projects (GET)
+- http://localhost:8080/monolith/rext/usermgmt/users (GET)
 
