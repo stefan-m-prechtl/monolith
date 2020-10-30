@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
@@ -47,7 +48,6 @@ public class AbstractResource<E extends AbstractEntity>
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getResources()
 	{
-		// Daten laden und konvertieren (dabei self-Link setzen)
 		final List<E> domainObjects = this.repository.loadAll();
 		return Response.ok(domainObjects).build();
 	}
@@ -66,6 +66,21 @@ public class AbstractResource<E extends AbstractEntity>
 		}
 
 		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+
+	@DELETE
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteResourceAll(@QueryParam("flag") final String flag)
+	{
+		if (flag.equals("all"))
+		{
+			this.repository.deleteAll();
+			return Response.noContent().build();
+		}
+
+		return Response.status(Response.Status.NOT_FOUND).build();
+
 	}
 
 	@DELETE
@@ -92,7 +107,7 @@ public class AbstractResource<E extends AbstractEntity>
 	{
 		final UUID objid = entity.getObjId();
 
-		// prüfen, ob User bereits vorhanden
+		// prüfen, ob Enitty bereits vorhanden ist
 		Optional<E> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
@@ -104,7 +119,7 @@ public class AbstractResource<E extends AbstractEntity>
 			return Response.status(Response.Status.CONFLICT).entity("User mit Login bereits vorhanden").build();
 		}
 
-		// User ist neu --> persistieren
+		// Enitity ist neu --> persistieren
 		this.repository.save(entity);
 		final URI linkURI = UriBuilder.fromUri(this.uriInfo.getAbsolutePath()).path(objid.toString()).build();
 		final Link link = Link.fromUri(linkURI).rel("self").type(MediaType.APPLICATION_JSON).build();

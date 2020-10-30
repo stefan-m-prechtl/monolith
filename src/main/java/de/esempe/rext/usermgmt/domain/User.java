@@ -18,7 +18,8 @@ import de.esempe.rext.usermgmt.boundary.Constants;
 @Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.all, query = "SELECT u FROM User u"),
+	@NamedQuery(name = Constants.selectall, query = "SELECT u FROM User u"),
+	@NamedQuery(name = Constants.deleteall, query = "DELETE FROM User"),
 	@NamedQuery(name = Constants.byObjId, query = "SELECT u FROM User u WHERE u.objid= :objid"),
 	@NamedQuery(name = Constants.byLogin, query = "SELECT u FROM User u WHERE u.login= :login")
 })

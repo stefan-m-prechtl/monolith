@@ -15,7 +15,8 @@ public final class Constants
 
 	public final static String schema = "userdb";
 	public final static String table = "t_user";
-	public final static String all = "allUsers";
+	public final static String selectall = "selectAllUsers";
+	public final static String deleteall = "deleteAllUsers";
 	public final static String byObjId = "UserbyObjId";
 	public final static String byLogin = "UserbyLogin";
 

@@ -4,7 +4,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("rext")
-public class ApplicationUserMgmt extends Application
+public class ApplicationRext extends Application
 {
 	// nichts zu tun!
 }

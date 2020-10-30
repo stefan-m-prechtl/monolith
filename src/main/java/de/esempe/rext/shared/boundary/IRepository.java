@@ -11,6 +11,8 @@ public interface IRepository<E extends AbstractEntity>
 {
 	List<E> loadAll();
 
+	void deleteAll();
+
 	Optional<E> findByObjId(UUID objId);
 
 	Optional<E> findByKey(Key key);

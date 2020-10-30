@@ -38,6 +38,12 @@ public abstract class AbstractRepository<E extends AbstractEntity> implements IR
 	}
 
 	@Override
+	public void deleteAll()
+	{
+		this.em.createNamedQuery(this.mapNamedQueries.get(NamedQueryConstants.DELETE_ALL), this.entityClass).executeUpdate();
+	}
+
+	@Override
 	public Optional<E> findByObjId(final UUID objid)
 	{
 		return this.findOneEntityByNamedQuery(this.mapNamedQueries.get(NamedQueryConstants.SELECT_BY_ID), "objid", objid);

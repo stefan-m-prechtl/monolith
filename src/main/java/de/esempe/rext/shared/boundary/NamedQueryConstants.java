@@ -9,6 +9,7 @@ package de.esempe.rext.shared.boundary;
 public final class NamedQueryConstants
 {
 	public final static String SELECT_ALL = "SelectAll";
+	public final static String DELETE_ALL = "DeleteAll";
 	public final static String SELECT_BY_ID = "SelectById";
 	public final static String SELECT_BY_KEY = "SelectByKey";
 }

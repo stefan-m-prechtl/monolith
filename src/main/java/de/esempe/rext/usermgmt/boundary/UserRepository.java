@@ -24,7 +24,8 @@ public class UserRepository extends AbstractRepository<User>
 	public void init()
 	{
 		super.em = this.em;
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.all);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectall);
+		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteall);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjId);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byLogin);
 	}

@@ -102,8 +102,9 @@ public class Project extends AbstractEntity
 		//@formatter:off
 		final String result = MoreObjects.toStringHelper(this)
 				.add("id",this.getId())
-				.add("obiId",this.getObjId())
+				.add("objId",this.getObjId())
 				.add("name",this.name)
+				.add("ownerObjId",this.getOwnerUserObjid())
 				.toString();
 
 		return result;
