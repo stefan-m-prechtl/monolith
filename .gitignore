@@ -4,3 +4,5 @@
 /bin/
 /docker/mysql8/
 /.externalToolBuilders/
+/.classpath
+/.settings

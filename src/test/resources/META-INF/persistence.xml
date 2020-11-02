@@ -11,7 +11,7 @@
 		<class>de.esempe.rext.workflowmgmt.domain.Transition</class>
 
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workflowdb?useSSL=false" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workflowdb?allowPublicKeyRetrieval=true&amp;useSSL=false" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
@@ -25,7 +25,7 @@
 		<class>de.esempe.rext.itemmgmt.domain.Item</class>
  		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/itemdb?useSSL=false" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/itemdb?allowPublicKeyRetrieval=true&amp;useSSL=false" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
@@ -39,7 +39,7 @@
 		<class>de.esempe.rext.projectmgmt.domain.Project</class>
  		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/projectdb?useSSL=false" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/projectdb?allowPublicKeyRetrieval=true&amp;useSSL=false"/>
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
@@ -53,7 +53,7 @@
 		<class>de.esempe.rext.rolemgmt.domain.Role</class>
  		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/roledb?useSSL=false" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/roledb?allowPublicKeyRetrieval=true&amp;useSSL=false" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
@@ -67,7 +67,7 @@
 		<class>de.esempe.rext.usermgmt.domain.User</class>
  		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/userdb?useSSL=false" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/userdb?allowPublicKeyRetrieval=true&amp;useSSL=false" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />

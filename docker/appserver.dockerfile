@@ -1,5 +1,6 @@
 # Basis-Image
-FROM payara/server-full:5.193
+# FROM payara/server-full:5.193
+FROM payara/server-full:5.2020.5-jdk11
 
 # Debug-Modus aktivieren
 ENV PAYARA_ARGS --debug

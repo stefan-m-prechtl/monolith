@@ -3,8 +3,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
@@ -36,7 +36,7 @@ dependencies {
 	testRuntimeOnly group: 'com.google.guava', name: 'guava', version: '23.0'
     
     // JPA Integrationtest
-	testImplementation (group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.3') {
+	testImplementation (group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7') {
 		exclude	group: 'org.eclipse.persistence', module: 'javax.persistence'
 	}
 	testImplementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
