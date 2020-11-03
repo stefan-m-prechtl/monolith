@@ -3,6 +3,6 @@
 /build/
 /bin/
 /docker/mysql8/
+/docker/autodeploy/
 /.externalToolBuilders/
 /.classpath
-/.settings

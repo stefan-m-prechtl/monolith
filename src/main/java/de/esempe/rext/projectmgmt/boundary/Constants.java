@@ -14,7 +14,8 @@ public class Constants
 	// JPA: Schema, Tabelle, Named Queries
 	public final static String schema = "projectdb";
 	public final static String table = "t_project";
-	public final static String all = "allProject";
+	public final static String selectall = "allProject";
+	public final static String deleteall = "deleteAllProjects";
 	public final static String byObjId = "ProjectByObjId";
 	public final static String byName = "ProjectByName";
 

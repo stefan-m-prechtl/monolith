@@ -3,6 +3,8 @@ package de.esempe.rext.projectmgmt.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.UUID;
+
 import javax.json.Json;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbConfig;
@@ -30,6 +32,7 @@ public class ProjectJsonTest
 	{
 		final Project entity = new Project("Demo");
 		entity.setDescription("Demoprojekt");
+		entity.setOwnerUserObjid(UUID.randomUUID());
 
 		return entity;
 	}
@@ -57,9 +60,10 @@ public class ProjectJsonTest
 		assertAll("Project As Json",
 		  () -> assertThat(entityAsJsonString).isNotNull(),
 		  () -> assertThat(entityAsJsonString).isNotEmpty(),
+		  () -> assertThat(entityAsJsonString).contains(ProjectJsonAdapter.field_id),
 		  () -> assertThat(entityAsJsonString).contains(ProjectJsonAdapter.field_name),
 		  () -> assertThat(entityAsJsonString).contains(ProjectJsonAdapter.field_description),
-		  () -> assertThat(entityAsJsonString).contains(ProjectJsonAdapter.field_id)
+		  () -> assertThat(entityAsJsonString).contains(ProjectJsonAdapter.field_owner)
 		 );
 		//@formatter:on
 
@@ -82,7 +86,8 @@ public class ProjectJsonTest
 		  () ->	assertThat(entityObjFromJsonString).isNotNull(),
 		  () ->	assertThat(entityObjFromJsonString).isEqualTo(entity),
 		  () ->	assertThat(entityObjFromJsonString.getName()).isEqualTo(entity.getName()),
-		  () ->	assertThat(entityObjFromJsonString.getDescription()).isEqualTo(entity.getDescription())
+		  () ->	assertThat(entityObjFromJsonString.getDescription()).isEqualTo(entity.getDescription()),
+		  () ->	assertThat(entityObjFromJsonString.getOwnerUserObjid()).isEqualTo(entity.getOwnerUserObjid())
 		);
 		//@formatter:off
 

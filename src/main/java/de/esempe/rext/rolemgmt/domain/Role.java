@@ -18,7 +18,8 @@ import de.esempe.rext.shared.domain.Key;
 @Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.all, query = "SELECT r FROM Role r"),
+	@NamedQuery(name = Constants.selectall, query = "SELECT r FROM Role r"),
+	@NamedQuery(name = Constants.deleteall, query = "DELETE FROM Role"),
 	@NamedQuery(name = Constants.byObjId, query = "SELECT r FROM Role r WHERE r.objid= :objid"),
 	@NamedQuery(name = Constants.byName, query = "SELECT r FROM Role r WHERE r.name= :name")
 })

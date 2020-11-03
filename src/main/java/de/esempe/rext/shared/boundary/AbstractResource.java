@@ -107,7 +107,7 @@ public class AbstractResource<E extends AbstractEntity>
 	{
 		final UUID objid = entity.getObjId();
 
-		// prüfen, ob Enitty bereits vorhanden ist
+		// prüfen, ob Entity bereits vorhanden ist
 		Optional<E> searchResult = this.repository.findByObjId(objid);
 		if (searchResult.isPresent())
 		{
@@ -116,7 +116,7 @@ public class AbstractResource<E extends AbstractEntity>
 		searchResult = this.repository.findByKey(entity.getKey());
 		if (searchResult.isPresent())
 		{
-			return Response.status(Response.Status.CONFLICT).entity("User mit Login bereits vorhanden").build();
+			return Response.status(Response.Status.CONFLICT).entity("Resource mit gleichem Key bereits vorhanden").build();
 		}
 
 		// Enitity ist neu --> persistieren

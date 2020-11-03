@@ -91,7 +91,7 @@ public class User extends AbstractEntity
 	@Override
 	public String toString()
 	{
-		//@formatter:off
+		// @formatter:off
 		final String result = MoreObjects.toStringHelper(this)
 				.add("id",this.getId())
 				.add("obiId",this.getObjId())
@@ -99,7 +99,7 @@ public class User extends AbstractEntity
 				.toString();
 
 		return result;
-		//@formatter:on
+		// @formatter:on
 	}
 
 }

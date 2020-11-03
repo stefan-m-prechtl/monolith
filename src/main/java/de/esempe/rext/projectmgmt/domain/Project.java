@@ -18,7 +18,7 @@ import de.esempe.rext.shared.domain.Key;
 
 /**
  * Domänenklasse für ein Projekt.
- * 
+ *
  * @author Stefan M. Prechtl (www.esempe.de)
  *
  */
@@ -26,7 +26,8 @@ import de.esempe.rext.shared.domain.Key;
 @Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.all, query = "SELECT p FROM Project p"),
+	@NamedQuery(name = Constants.selectall, query = "SELECT p FROM Project p"),
+	@NamedQuery(name = Constants.deleteall, query = "DELETE FROM Project"),
 	@NamedQuery(name = Constants.byObjId, query = "SELECT p FROM Project p WHERE p.objid= :objid"),
 	@NamedQuery(name = Constants.byName, query = "SELECT p FROM Project p WHERE p.name= :name")
 })
@@ -99,7 +100,7 @@ public class Project extends AbstractEntity
 	@Override
 	public String toString()
 	{
-		//@formatter:off
+		// @formatter:off
 		final String result = MoreObjects.toStringHelper(this)
 				.add("id",this.getId())
 				.add("objId",this.getObjId())
@@ -108,6 +109,6 @@ public class Project extends AbstractEntity
 				.toString();
 
 		return result;
-		//@formatter:on
+		// @formatter:on
 	}
 }

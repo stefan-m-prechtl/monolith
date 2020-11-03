@@ -15,7 +15,8 @@ public final class Constants
 
 	public final static String schema = "roledb";
 	public final static String table = "t_role";
-	public final static String all = "allRoles";
+	public final static String selectall = "selectAllRoles";
+	public final static String deleteall = "deleteAllRoles";
 	public final static String byObjId = "RolebyObjId";
 	public final static String byName = "RolebyName";
 
