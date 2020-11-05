@@ -22,27 +22,29 @@ import de.esempe.rext.shared.domain.Key;
 @Table(name = Constants.table, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.all, query = "SELECT i FROM Item i"),
+	@NamedQuery(name = Constants.selectall, query = "SELECT i FROM Item i"),
+	@NamedQuery(name = Constants.deleteall, query = "DELETE FROM Item"),
 	@NamedQuery(name = Constants.byObjId, query = "SELECT i FROM Item i WHERE i.objid= :objid"),
+	@NamedQuery(name = Constants.byTitle, query = "SELECT i FROM Item i WHERE i.title = :title"),
 	@NamedQuery(name = Constants.byProjectObjId, query = "SELECT i FROM Item i WHERE i.projectObjid= :project_objid")
-	
+
 })
 @JsonbNillable()
 public class Item extends AbstractEntity
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private String title;
 	private String content;
-	
+
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
 	@Column(name = "project_objid")
 	private UUID projectObjid;
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
 	@Column(name ="creator_user_objid")
 	private UUID creatorUserObjid;
-	
-	
+
+
 	Item()
 	{
 		// wegen JPA wird Defaultkonstruktor benötigt
@@ -61,7 +63,7 @@ public class Item extends AbstractEntity
 		this.title = title;
 		this.content = "";
 	}
-	
+
 	// Getter/Setter
 	public String getTitle()
 	{
@@ -89,17 +91,17 @@ public class Item extends AbstractEntity
 	{
 		return this.projectObjid;
 	}
-	
+
 	public void setProject(final UUID projectObjid)
 	{
 		this.projectObjid = projectObjid;
 	}
-	
+
 	public UUID getCreator()
 	{
 		return this.projectObjid;
 	}
-	
+
 	public void setCreator(final UUID userObjid)
 	{
 		this.creatorUserObjid = userObjid;
@@ -110,8 +112,8 @@ public class Item extends AbstractEntity
 	{
 		return new Key("title", this.title);
 	}
-	
-	
+
+
 	// Standardmethoden
 	@Override
 	public String toString()
