@@ -23,6 +23,7 @@
 		
 		<class>de.esempe.rext.shared.domain.UuidConverter</class>
 		<class>de.esempe.rext.itemmgmt.domain.Item</class>
+		<class>de.esempe.rext.itemmgmt.domain.Priority</class>
  		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/itemdb?allowPublicKeyRetrieval=true&amp;useSSL=false" />

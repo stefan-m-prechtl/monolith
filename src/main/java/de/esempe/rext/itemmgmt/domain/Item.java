@@ -6,6 +6,8 @@ import javax.json.bind.annotation.JsonbNillable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -19,13 +21,13 @@ import de.esempe.rext.shared.domain.AbstractEntity;
 import de.esempe.rext.shared.domain.Key;
 
 @Entity
-@Table(name = Constants.table, schema = Constants.schema)
+@Table(name = Constants.table_item, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.selectall, query = "SELECT i FROM Item i"),
-	@NamedQuery(name = Constants.deleteall, query = "DELETE FROM Item"),
-	@NamedQuery(name = Constants.byObjId, query = "SELECT i FROM Item i WHERE i.objid= :objid"),
-	@NamedQuery(name = Constants.byTitle, query = "SELECT i FROM Item i WHERE i.title = :title"),
+	@NamedQuery(name = Constants.selectallItem, query = "SELECT i FROM Item i"),
+	@NamedQuery(name = Constants.deleteallItem, query = "DELETE FROM Item"),
+	@NamedQuery(name = Constants.byObjIdItem, query = "SELECT i FROM Item i WHERE i.objid= :objid"),
+	@NamedQuery(name = Constants.byTitleItem, query = "SELECT i FROM Item i WHERE i.title = :title"),
 	@NamedQuery(name = Constants.byProjectObjId, query = "SELECT i FROM Item i WHERE i.projectObjid= :project_objid")
 
 })
@@ -43,6 +45,10 @@ public class Item extends AbstractEntity
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
 	@Column(name ="creator_user_objid")
 	private UUID creatorUserObjid;
+
+	@ManyToOne()
+	@JoinColumn(name = "fk_priorityid")
+	private Priority priority;
 
 
 	Item()
@@ -107,6 +113,16 @@ public class Item extends AbstractEntity
 		this.creatorUserObjid = userObjid;
 	}
 
+	public Priority getPriority()
+	{
+		return this.priority;
+	}
+
+	public void setPriority(Priority priority)
+	{
+		this.priority = priority;
+	}
+
 	@Override
 	public Key getKey()
 	{
@@ -124,6 +140,7 @@ public class Item extends AbstractEntity
 				.add("obiId",this.getObjId())
 				.add("title",this.title)
 				.add("content", this.content)
+				.add("priority", this.priority.getCaption())
 				.toString();
 
 		return result;

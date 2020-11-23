@@ -8,6 +8,12 @@ import javax.json.bind.adapter.JsonbAdapter;
 
 import de.esempe.rext.itemmgmt.domain.Item;
 
+/**
+ * Adapter muss in JsonbContextResolver registriert werden!
+ * 
+ * @author stefan.m.prechtl
+ *
+ */
 public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 {
 	public final static String field_id = "itemid";
@@ -44,8 +50,7 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 		{
 			final UUID objid = UUID.fromString(jsonObj.getString(field_id));
 			result = new Item(project, creator, title, objid);
-		}
-		else
+		} else
 		{
 			result = new Item(project, creator, title);
 		}

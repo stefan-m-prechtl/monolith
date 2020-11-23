@@ -12,7 +12,7 @@ import de.esempe.rext.itemmgmt.domain.Item;
 import de.esempe.rext.shared.boundary.AbstractRepository;
 import de.esempe.rext.shared.boundary.NamedQueryConstants;
 
-@Stateless(description = "Respository für Domänenklasse Projekt")
+@Stateless(description = "Repository für Domänenklasse Item")
 public class ItemRepository extends AbstractRepository<Item>
 {
 	@PersistenceContext(unitName = Constants.PersistenceContext)
@@ -27,10 +27,10 @@ public class ItemRepository extends AbstractRepository<Item>
 	public void init()
 	{
 		super.em = this.em;
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectall);
-		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteall);
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjId);
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byTitle);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectallItem);
+		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteallItem);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjIdItem);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byTitleItem);
 	}
 
 	public List<Item> loadAllForProject(final UUID projectObjid)

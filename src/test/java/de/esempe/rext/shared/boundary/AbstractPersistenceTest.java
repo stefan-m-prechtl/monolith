@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import de.esempe.rext.rolemgmt.boundary.RolePersistenceTest;
 import de.esempe.rext.shared.domain.AbstractEntity;
 import de.esempe.rext.shared.domain.Key;
 
@@ -67,9 +66,9 @@ public abstract class AbstractPersistenceTest<E extends AbstractEntity>
 		final E result = this.createTestEntity();
 
 		// act
-		RolePersistenceTest.tx.begin();
+		tx.begin();
 		this.objUnderTest.save(result);
-		RolePersistenceTest.tx.commit();
+		tx.commit();
 
 		// assert
 		assertThat(result).isNotNull();
@@ -107,9 +106,9 @@ public abstract class AbstractPersistenceTest<E extends AbstractEntity>
 		final Key key = this.entity.getKey();
 
 		// act
-		RolePersistenceTest.tx.begin();
+		tx.begin();
 		this.objUnderTest.save(this.entity);
-		RolePersistenceTest.tx.commit();
+		tx.commit();
 
 		// assert
 		assertThat(this.entity).isNotNull();

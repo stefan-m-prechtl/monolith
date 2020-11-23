@@ -11,22 +11,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import de.esempe.rext.itemmgmt.domain.Item;
+import de.esempe.rext.itemmgmt.domain.Priority;
 import de.esempe.rext.shared.boundary.AbstractResource;
 import de.esempe.rext.shared.domain.Key;
 
-@Stateless(description = "REST-Interface für Items")
-@Path(Constants.pathItems)
-public class ItemResource extends AbstractResource<Item>
+@Stateless(description = "REST-Interface für Prioritäten")
+@Path(Constants.pathPriorities)
+public class PriorityResource extends AbstractResource<Priority>
 {
 	@Context
 	UriInfo uriInfo;
 
 	// @Inject --> im Konstruktor
-	ItemRepository repository;
+	PriorityRepository repository;
 
 	@Inject
-	public ItemResource(final ItemRepository repository)
+	public PriorityResource(final PriorityRepository repository)
 	{
 		super(repository);
 		this.repository = repository;
@@ -35,9 +35,9 @@ public class ItemResource extends AbstractResource<Item>
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getItemsByTitle(@QueryParam("title") final String title)
+	public Response getPriorityByTitle(@QueryParam("caption") final String caption)
 	{
-		return super.getResourceByKey(new Key("title", title));
+		return super.getResourceByKey(new Key("caption", caption));
 	}
 
 }
