@@ -23,32 +23,35 @@ import de.esempe.rext.shared.domain.Key;
 	@NamedQuery(name = Constants.selectallPriority, query = "SELECT p FROM Priority p"),
 	@NamedQuery(name = Constants.deleteallPriority, query = "DELETE FROM Priority"),
 	@NamedQuery(name = Constants.byObjIdPriority, query = "SELECT p FROM Priority p WHERE p.objid= :objid"),
-	@NamedQuery(name = Constants.byCaptionPriority, query = "SELECT p FROM Priority p WHERE p.caption= :caption")
+	@NamedQuery(name = Constants.byNamePriority, query = "SELECT p FROM Priority p WHERE p.name= :name")
 })
+//@formatter:on
 @JsonbNillable()
 public class Priority extends AbstractEntity
 {
 	private static final long serialVersionUID = 1L;
 
 	private int value;
-	private String caption;
-
+	private String name;
+	private String description;
 
 	Priority()
 	{
 		// wegen JPA wird Defaultkonstruktor benötigt
 	}
 
-	public Priority(final int value, final String caption)
+	public Priority(final int value, final String name, final String description)
 	{
-		this(value, caption, UUID.randomUUID());
+		this(value, name, description, UUID.randomUUID());
 	}
 
-	public Priority(final int value, String caption, final UUID objid)
+	public Priority(final int value, String name, final String description, final UUID objid)
 	{
+
 		this.objid = objid;
 		this.value = value;
-		this.caption = caption;		
+		this.name = name;
+		this.description = description;
 	}
 
 	// Getter/Setter
@@ -62,24 +65,33 @@ public class Priority extends AbstractEntity
 		this.value = value;
 	}
 
-
-	public String getCaption()
+	public String getName()
 	{
-		return this.caption;
+		return this.name;
 	}
 
-	public void setCaption(String caption)
+	public void setName(String name)
 	{
-		Preconditions.checkArgument(!Strings.isNullOrEmpty(caption));
-		this.caption = caption;
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(name));
+		this.name = name;
+	}
+
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	public void setDescription(String description)
+	{
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(description));
+		this.description = description;
 	}
 
 	@Override
 	public Key getKey()
 	{
-		return new Key("caption", this.caption);
+		return new Key("name", this.name);
 	}
-
 
 	// Standardmethoden
 	@Override
@@ -88,8 +100,10 @@ public class Priority extends AbstractEntity
 		//@formatter:off
 		final String result = MoreObjects.toStringHelper(this)
 				.add("id",this.getId())
-				.add("obiId",this.getObjId())
-				.add("value",this.value)
+				.add("obiId", this.getObjId())
+				.add("name", this.value)
+				.add("description", this.description)
+				.add("value", this.value)
 				.toString();
 
 		return result;
@@ -97,4 +111,3 @@ public class Priority extends AbstractEntity
 	}
 
 }
-

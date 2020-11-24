@@ -119,12 +119,24 @@ public class AbstractResource<E extends AbstractEntity>
 			return Response.status(Response.Status.CONFLICT).entity("Resource mit gleichem Key bereits vorhanden").build();
 		}
 
+		// prüfen, ob referenzierte Enities bereits vorhanden sind
+		if (!this.handleReferencedEntities(entity))
+		{
+			return Response.status(Response.Status.CONFLICT).entity("Entität enthält nicht vorhandene Referenz-Objekte").build();
+		}
+
 		// Enitity ist neu --> persistieren
 		this.repository.save(entity);
 		final URI linkURI = UriBuilder.fromUri(this.uriInfo.getAbsolutePath()).path(objid.toString()).build();
 		final Link link = Link.fromUri(linkURI).rel("self").type(MediaType.APPLICATION_JSON).build();
 		return Response.noContent().links(link).build();
 
+	}
+
+	public boolean handleReferencedEntities(E entity)
+	{
+		return true; // throw new UnsupportedOperationException("Abgeleitete Klasse hat keine
+							// Implementierung von 'handleReferencedEntities()'");
 	}
 
 	@PUT

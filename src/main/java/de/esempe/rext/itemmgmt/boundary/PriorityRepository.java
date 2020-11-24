@@ -27,7 +27,7 @@ public class PriorityRepository extends AbstractRepository<Priority>
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectallPriority);
 		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteallPriority);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjIdPriority);
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byCaptionPriority);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byNamePriority);
 	}
 
 }

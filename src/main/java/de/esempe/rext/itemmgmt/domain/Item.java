@@ -29,8 +29,8 @@ import de.esempe.rext.shared.domain.Key;
 	@NamedQuery(name = Constants.byObjIdItem, query = "SELECT i FROM Item i WHERE i.objid= :objid"),
 	@NamedQuery(name = Constants.byTitleItem, query = "SELECT i FROM Item i WHERE i.title = :title"),
 	@NamedQuery(name = Constants.byProjectObjId, query = "SELECT i FROM Item i WHERE i.projectObjid= :project_objid")
-
 })
+//@formatter:on
 @JsonbNillable()
 public class Item extends AbstractEntity
 {
@@ -43,13 +43,12 @@ public class Item extends AbstractEntity
 	@Column(name = "project_objid")
 	private UUID projectObjid;
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
-	@Column(name ="creator_user_objid")
+	@Column(name = "creator_user_objid")
 	private UUID creatorUserObjid;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "fk_priorityid")
 	private Priority priority;
-
 
 	Item()
 	{
@@ -79,7 +78,7 @@ public class Item extends AbstractEntity
 	public void setTitle(final String title)
 	{
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(title));
-		this.title=title;
+		this.title = title;
 	}
 
 	public String getContent()
@@ -90,7 +89,7 @@ public class Item extends AbstractEntity
 	public void setContent(final String content)
 	{
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(content), "Leeres Argument");
-		this.content= content;
+		this.content = content;
 	}
 
 	public UUID getProject()
@@ -129,18 +128,17 @@ public class Item extends AbstractEntity
 		return new Key("title", this.title);
 	}
 
-
 	// Standardmethoden
 	@Override
 	public String toString()
 	{
 		//@formatter:off
 		final String result = MoreObjects.toStringHelper(this)
-				.add("id",this.getId())
-				.add("obiId",this.getObjId())
-				.add("title",this.title)
+				.add("id", this.getId())
+				.add("obiId", this.getObjId())
+				.add("title", this.title)
 				.add("content", this.content)
-				.add("priority", this.priority.getCaption())
+				.add("priority", this.priority.getName())
 				.toString();
 
 		return result;

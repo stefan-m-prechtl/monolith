@@ -1,5 +1,7 @@
 package de.esempe.rext.itemmgmt.boundary;
 
+import java.util.Optional;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -12,6 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import de.esempe.rext.itemmgmt.domain.Item;
+import de.esempe.rext.itemmgmt.domain.Priority;
 import de.esempe.rext.shared.boundary.AbstractResource;
 import de.esempe.rext.shared.domain.Key;
 
@@ -24,6 +27,8 @@ public class ItemResource extends AbstractResource<Item>
 
 	// @Inject --> im Konstruktor
 	ItemRepository repository;
+	@Inject
+	PriorityRepository repositoryPriority;
 
 	@Inject
 	public ItemResource(final ItemRepository repository)
@@ -38,6 +43,22 @@ public class ItemResource extends AbstractResource<Item>
 	public Response getItemsByTitle(@QueryParam("title") final String title)
 	{
 		return super.getResourceByKey(new Key("title", title));
+	}
+
+	@Override
+	public boolean handleReferencedEntities(Item entity)
+	{
+		boolean result = false;
+
+		final Priority prio = entity.getPriority();
+		final Optional<Priority> repoPriority = this.repositoryPriority.findByObjId(prio.getObjId());
+		if (repoPriority.isPresent())
+		{
+			entity.setPriority(repoPriority.get());
+			result = true;
+		}
+
+		return result;
 	}
 
 }

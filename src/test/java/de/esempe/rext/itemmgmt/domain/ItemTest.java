@@ -24,13 +24,19 @@ public class ItemTest extends AbstractEntityTest<Item>
 {
 	private final static String jpaContext = "testitemdb";
 
+	private Priority prio = null;
+
 	@BeforeAll
 	void setUp() throws Exception
 	{
 		final List<String> initialQueries = new ArrayList<String>();
 		initialQueries.add("DELETE FROM itemdb.t_item");
+		initialQueries.add("DELETE FROM itemdb.t_priority");
 
 		super.setUp(jpaContext, initialQueries, Item.class);
+
+		this.prio = new Priority(50, "Normal", "Standard-Prio");
+		this.saveReferencedEntity(this.prio);
 
 	}
 
@@ -42,8 +48,8 @@ public class ItemTest extends AbstractEntityTest<Item>
 		final Item objUnderTest = new Item(projectObjId, creatorObjId, "Testitem");
 
 		objUnderTest.setContent("Inhalt vom Testitem");
-		final UUID userObjid = UUID.randomUUID();
-		objUnderTest.setCreator(userObjid);
+		objUnderTest.setCreator(creatorObjId);
+		objUnderTest.setPriority(this.prio);
 
 		return objUnderTest;
 	}

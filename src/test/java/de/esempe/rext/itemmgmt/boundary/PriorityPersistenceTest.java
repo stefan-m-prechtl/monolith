@@ -42,7 +42,7 @@ public class PriorityPersistenceTest extends AbstractPersistenceTest<Priority>
 	@Override
 	protected Priority createTestEntity()
 	{
-		final Priority entity = new Priority(10, "Mittel");
+		final Priority entity = new Priority(10, "Mittel", "Normale Prio");
 		return entity;
 	}
 

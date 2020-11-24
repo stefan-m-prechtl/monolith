@@ -49,7 +49,7 @@ public class ItemPersistenceTest extends AbstractPersistenceTest<Item>
 	{
 		final UUID projectObjId = UUID.randomUUID();
 		final UUID userObjId = UUID.randomUUID();
-		final Priority prio = this.savePriority(new Priority(10, "Mittel"));
+		final Priority prio = this.savePriority(new Priority(10, "Mittel", "Normale Prio"));
 
 		final Item entity = new Item(projectObjId, userObjId, "Testitem");
 		entity.setContent("Inhalt für Testitem");

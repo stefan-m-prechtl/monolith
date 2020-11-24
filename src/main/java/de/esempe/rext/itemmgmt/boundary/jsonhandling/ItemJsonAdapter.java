@@ -7,10 +7,11 @@ import javax.json.JsonObject;
 import javax.json.bind.adapter.JsonbAdapter;
 
 import de.esempe.rext.itemmgmt.domain.Item;
+import de.esempe.rext.itemmgmt.domain.Priority;
 
 /**
  * Adapter muss in JsonbContextResolver registriert werden!
- * 
+ *
  * @author stefan.m.prechtl
  *
  */
@@ -21,6 +22,7 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 	public final static String field_content = "content";
 	public final static String field_project = "projektobjid";
 	public final static String field_creator = "creatorobjid";
+	public final static String field_priority = "priority";
 
 	@Override
 	public JsonObject adaptToJson(final Item item) throws Exception
@@ -32,6 +34,7 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 				.add(field_content, item.getContent())
 				.add(field_project, item.getProject().toString())
 				.add(field_creator, item.getCreator().toString())
+				.add(field_priority, new PriorityJsonAdapter().adaptToJson(item.getPriority()))
 				.build();
 		//@formatter:on
 		return result;
@@ -45,6 +48,8 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 		final String content = jsonObj.getString(field_content);
 		final UUID project = UUID.fromString(jsonObj.getString(field_project));
 		final UUID creator = UUID.fromString(jsonObj.getString(field_creator));
+		final JsonObject jsonPriority = jsonObj.getJsonObject(field_priority);
+		final Priority objPriority = new PriorityJsonAdapter().adaptFromJson(jsonPriority);
 
 		if (jsonObj.containsKey(field_id))
 		{
@@ -56,6 +61,7 @@ public class ItemJsonAdapter implements JsonbAdapter<Item, JsonObject>
 		}
 		result.setContent(content);
 		result.setCreator(creator);
+		result.setPriority(objPriority);
 
 		return result;
 	}

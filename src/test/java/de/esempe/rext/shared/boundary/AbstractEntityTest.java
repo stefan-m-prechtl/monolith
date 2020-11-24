@@ -51,6 +51,14 @@ public abstract class AbstractEntityTest<E extends AbstractEntity>
 		em.close();
 	}
 
+	protected <T extends AbstractEntity> T saveReferencedEntity(T refEntity)
+	{
+		tx.begin();
+		em.persist(refEntity);
+		tx.commit();
+		return refEntity;
+	}
+
 	@Test
 	@DisplayName("Create entity")
 	@Order(1)

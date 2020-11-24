@@ -35,9 +35,9 @@ public class PriorityResource extends AbstractResource<Priority>
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPriorityByTitle(@QueryParam("caption") final String caption)
+	public Response getPriorityByTitle(@QueryParam("name") final String name)
 	{
-		return super.getResourceByKey(new Key("caption", caption));
+		return super.getResourceByKey(new Key("name", name));
 	}
 
 }

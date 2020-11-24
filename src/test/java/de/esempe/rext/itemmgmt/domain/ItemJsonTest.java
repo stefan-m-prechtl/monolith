@@ -33,7 +33,9 @@ public class ItemJsonTest
 		final UUID projectObjId = UUID.randomUUID();
 		final UUID userObjId = UUID.randomUUID();
 		final Item itemObj = new Item(projectObjId, userObjId, "Testitem");
+		final Priority prioObj = new Priority(50, "Normal", "Standard-Prio");
 		itemObj.setContent("Inhalt für Testitem");
+		itemObj.setPriority(prioObj);
 
 		return itemObj;
 	}
@@ -64,7 +66,8 @@ public class ItemJsonTest
 		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_title),
 		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_content),
 		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_project),
-		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_creator)
+		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_creator),
+		  () -> assertThat(userJson).contains(ItemJsonAdapter.field_priority)
 		 );
 		//@formatter:on
 
@@ -89,7 +92,8 @@ public class ItemJsonTest
 		  () ->	assertThat(itemObjFromJson.getTitle()).isEqualTo(itemObj.getTitle()),
 		  () ->	assertThat(itemObjFromJson.getProject()).isEqualTo(itemObj.getProject()),
 		  () ->	assertThat(itemObjFromJson.getContent()).isEqualTo(itemObj.getContent()),
-		  () ->	assertThat(itemObjFromJson.getCreator()).isEqualTo(itemObj.getCreator())
+		  () ->	assertThat(itemObjFromJson.getCreator()).isEqualTo(itemObj.getCreator()),
+		  () ->	assertThat(itemObjFromJson.getPriority()).isEqualTo(itemObj.getPriority())
 		);
 		//@formatter:off
 

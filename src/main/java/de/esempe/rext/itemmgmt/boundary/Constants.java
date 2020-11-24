@@ -29,7 +29,7 @@ public class Constants
 	public final static String selectallPriority = "selectAllPriority";
 	public final static String deleteallPriority = "deleteAllPriority";
 	public final static String byObjIdPriority = "byObjIdPriority";
-	public final static String byCaptionPriority = "byCaptionPriority";
+	public final static String byNamePriority = "byCaptionPriority";
 	// TaggedValue
 	public final static String selectallTaggedValue = "selectAllTaggedValue";
 	public final static String deleteallTaggedValue = "deleteAllTaggedValue";
