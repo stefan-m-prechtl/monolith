@@ -18,7 +18,8 @@ import de.esempe.rext.workflowmgmt.boundary.Constants;
 @Table(name = Constants.table_state, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.allStatus, query = "SELECT s FROM State s"),
+	@NamedQuery(name = Constants.selectAllStatus, query = "SELECT s FROM State s"),
+	@NamedQuery(name = Constants.deleteAllStatus, query = "DELETE FROM State"),
 	@NamedQuery(name = Constants.byObjIdStatus, query = "SELECT s FROM State s WHERE s.objid= :objid"),
 	@NamedQuery(name = Constants.byNameStatus, query = "SELECT s FROM State s WHERE s.name= :name")
 })
@@ -80,9 +81,9 @@ public class State extends AbstractEntity
 	{
 		//@formatter:off
 		final String result = MoreObjects.toStringHelper(this)
-				.add("id",this.getId())
-				.add("obiId",this.getObjId())
-				.add("name",this.name)
+				.add("id", this.getId())
+				.add("obiId", this.getObjId())
+				.add("name", this.name)
 				.toString();
 
 		return result;

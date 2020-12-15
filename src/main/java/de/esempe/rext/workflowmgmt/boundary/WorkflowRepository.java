@@ -24,8 +24,10 @@ public class WorkflowRepository extends AbstractRepository<Workflow>
 	public void init()
 	{
 		super.em = this.em;
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.allWorkflow);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectAllWorkflow);
+		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteAllTransition);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjIdWorkflow);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byNameWorkflow);
 	}
 
 }

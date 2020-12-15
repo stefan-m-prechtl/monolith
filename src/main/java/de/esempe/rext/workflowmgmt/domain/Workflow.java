@@ -28,7 +28,8 @@ import de.esempe.rext.workflowmgmt.boundary.Constants;
 @Table(name = Constants.table_workflow, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.allWorkflow, query = "SELECT w FROM Workflow w"),
+	@NamedQuery(name = Constants.selectAllWorkflow, query = "SELECT w FROM Workflow w"),
+	@NamedQuery(name = Constants.deleteAllWorkflow, query = "DELETE FROM Workflow"),
 	@NamedQuery(name = Constants.byObjIdWorkflow, query = "SELECT w FROM Workflow w WHERE w.objid= :objid"),
 	@NamedQuery(name = Constants.byNameWorkflow, query = "SELECT w FROM Workflow w WHERE w.name= :name")
 })
@@ -101,8 +102,7 @@ public class Workflow extends AbstractEntity
 		if (anyMatch)
 		{
 			this.firstStateObjid = firstStatusObjid;
-		}
-		else
+		} else
 		{
 			throw new IllegalArgumentException("Status in keiner Transition als From-Status enthalten");
 		}

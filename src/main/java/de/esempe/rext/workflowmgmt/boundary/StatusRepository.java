@@ -24,8 +24,10 @@ public class StatusRepository extends AbstractRepository<State>
 	public void init()
 	{
 		super.em = this.em;
-		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.allStatus);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_ALL, Constants.selectAllStatus);
+		this.mapNamedQueries.put(NamedQueryConstants.DELETE_ALL, Constants.deleteAllStatus);
 		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_ID, Constants.byObjIdStatus);
+		this.mapNamedQueries.put(NamedQueryConstants.SELECT_BY_KEY, Constants.byNameStatus);
 	}
 
 }

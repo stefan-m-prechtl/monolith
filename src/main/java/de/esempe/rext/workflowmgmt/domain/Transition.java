@@ -22,7 +22,7 @@ import de.esempe.rext.workflowmgmt.boundary.Constants;
 /**
  * Eine Transition, Übergang vom Status s -> Status t, ist immer genau einem
  * Workflow zugeordnet.
- * 
+ *
  * @author Stefan M. Prechtl (www.esempe.de)
  *
  */
@@ -30,7 +30,8 @@ import de.esempe.rext.workflowmgmt.boundary.Constants;
 @Table(name = Constants.table_transition, schema = Constants.schema)
 //@formatter:off
 @NamedQueries({
-	@NamedQuery(name = Constants.allTransition, query = "SELECT t FROM Transition t"),
+	@NamedQuery(name = Constants.selectAllTransition, query = "SELECT t FROM Transition t"),
+	@NamedQuery(name = Constants.deleteAllTransition, query = "DELETE FROM Transition"),
 	@NamedQuery(name = Constants.byObjIdTransition, query = "SELECT t FROM Transition t WHERE t.objid= :objid"),
 	@NamedQuery(name = Constants.byWorkflowTransition, query = "SELECT t FROM Transition t WHERE t.workflowObjid= :workflow_objid")
 })
@@ -42,11 +43,11 @@ public class Transition extends AbstractEntity
 	@Convert(converter = de.esempe.rext.shared.domain.UuidConverter.class)
 	@Column(name = "workflow_objid")
 	private UUID workflowObjid;
-	
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "from_state_id")
 	private State fromState;
-	
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "to_state_id")
 	private State toState;
@@ -57,7 +58,7 @@ public class Transition extends AbstractEntity
 	{
 		// wegen JPA wird Defaultkonstruktor benötigt
 	}
-	
+
 	public Transition(final UUID workflowObjid, final State fromState, final State toState)
 	{
 		this(workflowObjid,fromState, toState, UUID.randomUUID());
@@ -81,7 +82,7 @@ public class Transition extends AbstractEntity
 	{
 		return this.toState;
 	}
-	
+
 	public String getDescription()
 	{
 		return this.description;
@@ -91,7 +92,7 @@ public class Transition extends AbstractEntity
 	{
 		this.description = description;
 	}
-	
+
 
 	@Override
 	public Key getKey()
