@@ -12,6 +12,7 @@ import de.esempe.rext.itemmgmt.boundary.jsonhandling.TaggedValueJsonAdapter;
 import de.esempe.rext.projectmgmt.boundary.jsonhandling.ProjectJsonAdapter;
 import de.esempe.rext.rolemgmt.boundary.jsonhandling.RoleJsonAdapter;
 import de.esempe.rext.usermgmt.boundary.jsonhandling.UserJsonAdapter;
+import de.esempe.rext.workflowmgmt.boundary.jsonhandling.StateJsonAdapter;
 
 @Provider
 public class JsonbContextResolver implements ContextResolver<Jsonb>
@@ -20,16 +21,17 @@ public class JsonbContextResolver implements ContextResolver<Jsonb>
 	public Jsonb getContext(final Class<?> type)
 	{
 		// @formatter:off
-		final JsonbConfig config = new JsonbConfig()
+		final var config = new JsonbConfig()
 				.withAdapters(new ItemJsonAdapter())
 				.withAdapters(new PriorityJsonAdapter())
 				.withAdapters(new TaggedValueJsonAdapter())
 				.withAdapters(new ProjectJsonAdapter())
 				.withAdapters(new RoleJsonAdapter())
-				.withAdapters(new UserJsonAdapter());
+				.withAdapters(new UserJsonAdapter())
+				.withAdapters(new StateJsonAdapter());
 	   // @formatter:on
 
-		final Jsonb jsonb = JsonbBuilder.create(config);
+		final var jsonb = JsonbBuilder.create(config);
 
 		return jsonb;
 	}

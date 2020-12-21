@@ -23,6 +23,7 @@ public class PriorityPersistenceTest extends AbstractPersistenceTest<Priority>
 	static void setUp() throws Exception
 	{
 		final List<String> initialQueries = new ArrayList<String>();
+		initialQueries.add("DELETE FROM itemdb.t_item");
 		initialQueries.add("DELETE FROM itemdb.t_priority");
 
 		AbstractPersistenceTest.setUp(jpaContext, initialQueries);
@@ -32,7 +33,7 @@ public class PriorityPersistenceTest extends AbstractPersistenceTest<Priority>
 	@Override
 	protected PriorityRepository createObjUnderTest()
 	{
-		final PriorityRepository repository = new PriorityRepository();
+		final var repository = new PriorityRepository();
 		repository.em = em;
 		repository.init();
 
@@ -42,14 +43,14 @@ public class PriorityPersistenceTest extends AbstractPersistenceTest<Priority>
 	@Override
 	protected Priority createTestEntity()
 	{
-		final Priority entity = new Priority(10, "Mittel", "Normale Prio");
+		final var entity = new Priority(10, "Mittel", "Normale Prio");
 		return entity;
 	}
 
 	@Override
 	protected Priority updateTestEntity(final Priority entity)
 	{
-		final Priority updatedObject = entity;
+		final var updatedObject = entity;
 		updatedObject.setValue(entity.getValue() + 10);
 		return updatedObject;
 	}

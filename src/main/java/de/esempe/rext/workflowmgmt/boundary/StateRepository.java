@@ -10,12 +10,12 @@ import de.esempe.rext.shared.boundary.NamedQueryConstants;
 import de.esempe.rext.workflowmgmt.domain.State;
 
 @Stateless(description = "Respository für Domänenklasse Status")
-public class StatusRepository extends AbstractRepository<State>
+public class StateRepository extends AbstractRepository<State>
 {
 	@PersistenceContext(unitName = Constants.PersistenceContext)
 	EntityManager em;
 
-	public StatusRepository()
+	public StateRepository()
 	{
 		super(State.class);
 	}

@@ -98,11 +98,12 @@ public class Workflow extends AbstractEntity
 
 	public void setFirstStateObjid(final UUID firstStatusObjid)
 	{
-		final boolean anyMatch = this.transitions.stream().map(t -> t.getFromState()).anyMatch(s -> s.getObjId().equals(firstStatusObjid));
+		final var anyMatch = this.transitions.stream().map(t -> t.getFromState()).anyMatch(s -> s.getObjId().equals(firstStatusObjid));
 		if (anyMatch)
 		{
 			this.firstStateObjid = firstStatusObjid;
-		} else
+		}
+		else
 		{
 			throw new IllegalArgumentException("Status in keiner Transition als From-Status enthalten");
 		}
@@ -151,7 +152,7 @@ public class Workflow extends AbstractEntity
 	public String toString()
 	{
 		//@formatter:off
-		final String result = MoreObjects.toStringHelper(this)
+		final var result = MoreObjects.toStringHelper(this)
 				.add("id",this.getId())
 				.add("obiId",this.getObjId())
 				.add("name",this.name)

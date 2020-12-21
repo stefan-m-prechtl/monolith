@@ -23,10 +23,10 @@ public class StatusResource extends AbstractResource<State>
 	UriInfo uriInfo;
 
 	// @Inject --> im Konstruktor
-	StatusRepository repository;
+	StateRepository repository;
 
 	@Inject
-	public StatusResource(final StatusRepository repository)
+	public StatusResource(final StateRepository repository)
 	{
 		super(repository);
 		this.repository = repository;

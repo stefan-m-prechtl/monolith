@@ -32,9 +32,9 @@ public class StatusPersistenceTest extends AbstractPersistenceTest<State>
 	}
 
 	@Override
-	protected StatusRepository createObjUnderTest()
+	protected StateRepository createObjUnderTest()
 	{
-		final StatusRepository repository = new StatusRepository();
+		final StateRepository repository = new StateRepository();
 		repository.em = em;
 		repository.init();
 
