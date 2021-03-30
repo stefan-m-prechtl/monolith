@@ -23,8 +23,8 @@ dependencies {
 	// ---- TESTING ---------------------------------------------------------------------------------------------
 	
 	// JUnit5-Testing
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
         
 	// Erweiterung: siehe http://joel-costigliola.github.io/assertj/assertj-core-quick-start.html
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
