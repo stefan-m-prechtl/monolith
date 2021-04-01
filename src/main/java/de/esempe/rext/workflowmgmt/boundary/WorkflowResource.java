@@ -13,20 +13,20 @@ import javax.ws.rs.core.UriInfo;
 
 import de.esempe.rext.shared.boundary.AbstractResource;
 import de.esempe.rext.shared.domain.Key;
-import de.esempe.rext.workflowmgmt.domain.State;
+import de.esempe.rext.workflowmgmt.domain.Workflow;
 
-@Stateless(description = "REST-Interface für WF-Status")
-@Path(Constants.pathStatus)
-public class StatusResource extends AbstractResource<State>
+@Stateless(description = "REST-Interface für WF")
+@Path(Constants.pathWorkflow)
+public class WorkflowResource extends AbstractResource<Workflow>
 {
 	@Context
 	UriInfo uriInfo;
 
 	// @Inject --> im Konstruktor
-	StateRepository repository;
+	WorkflowRepository repository;
 
 	@Inject
-	public StatusResource(final StateRepository repository)
+	public WorkflowResource(final WorkflowRepository repository)
 	{
 		super(repository);
 		this.repository = repository;

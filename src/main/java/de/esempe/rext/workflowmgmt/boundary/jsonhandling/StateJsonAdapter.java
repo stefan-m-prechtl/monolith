@@ -12,7 +12,7 @@ public class StateJsonAdapter implements JsonbAdapter<State, JsonObject>
 {
 	public final static String field_id = "stateid";
 	public final static String field_name = "name";
-	public final static String field_description = "desccription";
+	public final static String field_description = "description";
 
 	@Override
 	public JsonObject adaptToJson(State state) throws Exception
