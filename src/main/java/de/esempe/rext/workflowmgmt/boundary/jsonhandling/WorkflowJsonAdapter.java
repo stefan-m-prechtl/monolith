@@ -12,7 +12,7 @@ public class WorkflowJsonAdapter implements JsonbAdapter<Workflow, JsonObject>
 {
 	public final static String field_id = "workflowid";
 	public final static String field_name = "name";
-	public final static String field_description = "desccription";
+	public final static String field_description = "description";
 	public final static String field_firststate_id = "firststateid";
 
 	@Override
