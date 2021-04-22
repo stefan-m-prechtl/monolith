@@ -1,4 +1,4 @@
-# REXT Monolith(Java EE 8)
+# REXT Monolith (Java EE 8)
 
 REXT als Monolith
 
